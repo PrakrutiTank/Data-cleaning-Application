@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DataClean Pro — AI-powered interactive data cleaning SaaS. Upload your dataset, detect issues, approve or customize cleaning operations, and export clean data instantly." />
+  <title>DataClean Pro — Interactive Data Cleaning Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background Particles -->
+  <div class="bg-particles" id="bgParticles"></div>
+
+  <!-- Header / Navbar -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="24" y2="24">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="logo-text">DataClean <span class="logo-pro">Pro</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="#upload-section" class="nav-link">Upload</a>
+        <a href="#suggestions-section" class="nav-link">Analyze</a>
+        <a href="#preview-section" class="nav-link">Preview</a>
+      </nav>
+      <div class="nav-badge">Smart Analysis</div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Smart Rule-Based Cleaning</span>
+      </div>
+      <h1 class="hero-title">
+        Clean Your Data.<br/>
+        <span class="gradient-text">Instantly & Precisely.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Upload any CSV or Excel dataset. Our AI detects issues, suggests fixes,
+        and lets you approve or customize every cleaning step — no code required.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main App Container -->
+  <main class="app-container">
+
+    <!-- ── STEP 1: Upload ─────────────────────────────── -->
+    <section class="card upload-card" id="upload-section">
+      <div class="card-header">
+        <div class="step-badge">01</div>
+        <div>
+          <h2 class="card-title">Upload Dataset</h2>
+          <p class="card-subtitle">Supports CSV and Excel (.xlsx) files up to 50 MB</p>
+        </div>
+      </div>
+
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" hidden />
+        <div class="upload-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="23" stroke="url(#uploadCircleGrad)" stroke-width="1.5" stroke-dasharray="4 2"/>
+            <path d="M24 32V20M18 26l6-6 6 6" stroke="url(#uploadArrowGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 36h16" stroke="url(#uploadArrowGrad)" stroke-width="2.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="uploadCircleGrad" x1="0" y1="0" x2="48" y2="48">
+                <stop offset="0%" stop-color="#6366f1" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.5"/>
+              </linearGradient>
+              <linearGradient id="uploadArrowGrad" x1="0" y1="0" x2="48" y2="48">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="upload-main-text">Drag &amp; drop your file here</p>
+        <p class="upload-sub-text">or</p>
+        <button class="btn btn-outline" id="browseBtn">Browse Files</button>
+        <p class="upload-formats">CSV · XLSX · XLS</p>
+      </div>
+
+      <div class="file-info" id="fileInfo" style="display:none;">
+        <div class="file-info-icon">📄</div>
+        <div class="file-info-details">
+          <span class="file-name" id="fileName"></span>
+          <span class="file-meta" id="fileMeta"></span>
+        </div>
+        <button class="btn btn-primary btn-sm" id="analyzeBtn">
+          <span>Analyze Dataset</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="btn btn-ghost btn-sm" id="removeFileBtn">✕</button>
+      </div>
+
+      <!-- Demo Dataset Button -->
+      <div class="demo-row">
+        <span class="demo-label">Don't have a file?</span>
+        <button class="btn btn-ghost btn-sm" id="loadDemoBtn">Load Demo Dataset</button>
+      </div>
+    </section>
+
+    <!-- ── Analyzing Progress ────────────────────────── -->
+    <div class="analysis-progress" id="analysisProgress" style="display:none;">
+      <div class="progress-card">
+        <div class="progress-spinner"></div>
+        <div class="progress-text">
+          <span class="progress-title">Analyzing dataset…</span>
+          <span class="progress-step" id="progressStep">Scanning columns</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: Cleaning Suggestions ─────────────── -->
+    <section class="card suggestions-card" id="suggestions-section" style="display:none;">
+      <div class="card-header">
+        <div class="step-badge">02</div>
+        <div>
+          <h2 class="card-title">Cleaning Suggestions</h2>
+          <p class="card-subtitle" id="suggestionsSummary">Issues detected in your dataset</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline btn-sm" id="approveAllBtn">
+            ✓ Approve All
+          </button>
+          <button class="btn btn-ghost btn-sm" id="dismissAllBtn">
+            Dismiss All
+          </button>
+        </div>
+      </div>
+
+      <!-- Issues List -->
+      <div class="issues-list" id="issuesList"></div>
+
+      <!-- Apply Cleaning -->
+      <div class="apply-strip">
+        <div class="apply-info">
+          <span id="approvedCount">0</span> of <span id="totalIssues">0</span> issues queued for cleaning
+        </div>
+        <button class="btn btn-primary" id="applyCleaningBtn" disabled>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Apply Cleaning
+        </button>
+      </div>
+    </section>
+
+    <!-- ── STEP 3: Data Preview ──────────────────────── -->
+    <section class="card preview-card" id="preview-section" style="display:none;">
+      <div class="card-header">
+        <div class="step-badge">03</div>
+        <div>
+          <h2 class="card-title">Data Preview</h2>
+          <p class="card-subtitle" id="previewMeta">Showing cleaned dataset</p>
+        </div>
+        <div class="header-actions">
+          <div class="view-toggle">
+            <button class="toggle-btn active" id="viewOriginalBtn">Original</button>
+            <button class="toggle-btn" id="viewCleanedBtn">Cleaned</button>
+          </div>
+          <button class="btn btn-success" id="downloadCsvBtn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 3v7M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            CSV
+          </button>
+          <button class="btn btn-success-alt" id="downloadExcelBtn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 3v7M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Excel
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar" id="statsBar"></div>
+
+      <!-- Table Wrapper -->
+      <div class="table-wrapper">
+        <table class="data-table" id="dataTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <p class="table-foot" id="tableFoot"></p>
+    </section>
+
+  </main>
+
+  <!-- ── Customize Modal ──────────────────────────────── -->
+  <div class="modal-overlay" id="customizeModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Customize Cleaning</h3>
+        <button class="modal-close" id="modalCloseBtn">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="modalCancelBtn">Cancel</button>
+        <button class="btn btn-primary" id="modalSaveBtn">Save Customization</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
